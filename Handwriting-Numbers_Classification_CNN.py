@@ -19,8 +19,8 @@ x_test_image = x_test
 
 # convert it from 2D to 1D
 # original shape(60000, 28, 28)
-x_train = x_train.reshape(60000, 784).astype('float32')
-x_test = x_test.reshape(10000, 784).astype('float32')
+x_train = x_train.reshape(60000, 28, 28, 1).astype('float32')
+x_test = x_test.reshape(10000, 28, 28, 1).astype('float32')
 
 # normalization (color range{0-255}
 x_train /= 255
@@ -34,20 +34,33 @@ y_test = np_utils.to_categorical(y_test)
 
 # build model
 from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Dropout
-model = Sequential()
-# input layer -> hidden layer
-model.add(Dense(units=256, input_dim=784, kernel_initializer='normal', activation='relu'))
-'''
-# use more neurons in a layer to increase accuracy
-model.add(Dense(units=256, input_dim=1000, kernel_initializer='normal', activation='relu'))
-# drop some neurons every round to avoid overfitting
-model.add(Dropout(0.5))
-'''
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPool2D
 
-# hidden layer -> output layer
-model.add(Dense(units=10, kernel_initializer='normal', activation='softmax'))
+model = Sequential()
+# first convolution layer
+# make 1 image to 16 images by 5x5 filter weight
+model.add(Conv2D(filters=16, kernel_size=(5, 5), padding='same', input_shape=(28, 28, 1), activation='relu'))
+# pooling layer
+# convert 16(28x28 size) images to 16(14x14 size) images.
+# the among of images won't be changed, but the images' size change.
+model.add(MaxPool2D(pool_size=(2, 2)))
+# second convolution layer
+# make 16 images to 36 images by 5x5 filter weight
+model.add(Conv2D(filters=36, kernel_size=(5, 5), padding='same', activation='relu'))
+# pooling layer
+# convert 36(14x14 size) images to 36(7x7 size) images.
+# the among of images won't be changed, but the images' size change.
+model.add((MaxPool2D(pool_size=(2, 2))))
+# drop some neurons every round to avoid overfitting
+model.add(Dropout(0.25))
+# flatten layer
+#
+model.add(Flatten())
+# hidden layer
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+# output layer
+model.add(Dense(10, activation='softmax'))
 
 # check model details
 print(model.summary())
@@ -59,7 +72,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accur
 # train the model and store the history
 # using 20% of training data as validation data to evaluate the accuracy
 # separate the rest of training data by batch_size and train the model 10 rounds.
-train_history = model.fit(x=x_train, y=y_train, validation_split=0.2, epochs=10, batch_size=200, verbose=2)
+train_history = model.fit(x=x_train, y=y_train, validation_split=0.2, epochs=10, batch_size=300, verbose=2)
 
 # show train history
 import matplotlib.pyplot as plt
@@ -107,4 +120,7 @@ plot_images_labels_prediction(x_test_image, y_test_label, prediction, idx=340)
 # confusion matrix
 import pandas as pd
 print(pd.crosstab(y_test_label, prediction, colnames=['predict'], rownames=['label']))
-
+'''
+The result shows 0.9914 accuracy.
+Check out the plots on accuracy and loss, there's no overfitting problem.
+'''
