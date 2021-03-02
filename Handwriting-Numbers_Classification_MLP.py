@@ -39,6 +39,13 @@ from keras.layers import Dense
 model = Sequential()
 # input layer -> hidden layer
 model.add(Dense(units=256, input_dim=784, kernel_initializer='normal', activation='relu'))
+'''
+# use more neurons in a layer to increase accuracy
+model.add(Dense(units=256, input_dim=1000, kernel_initializer='normal', activation='relu'))
+# drop some neurons every round to avoid overfitting
+model.add(Dropout(0.5))
+'''
+
 # hidden layer -> output layer
 model.add(Dense(units=10, kernel_initializer='normal', activation='softmax'))
 
