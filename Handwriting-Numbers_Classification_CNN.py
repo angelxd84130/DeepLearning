@@ -120,7 +120,9 @@ plot_images_labels_prediction(x_test_image, y_test_label, prediction, idx=340)
 # confusion matrix
 import pandas as pd
 print(pd.crosstab(y_test_label, prediction, colnames=['predict'], rownames=['label']))
+
 '''
 The result shows 0.9914 accuracy.
 Check out the plots on accuracy and loss, there's no overfitting problem.
+The accuracy and loss of train and validation are closing to the same amount.
 '''
