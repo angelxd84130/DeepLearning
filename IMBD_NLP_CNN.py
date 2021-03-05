@@ -72,4 +72,47 @@ x_test = sequence.pad_sequences(x_test, maxlen=100)
 
 # set up training model
 from keras import Sequential
+from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers import Embedding
 model = Sequential()
+# Embedding layer
+# input 2000 training examples, and each length is 100
+model.add(Embedding(output_dim=32, input_dim=2000, input_length=100))
+model.add(Dropout(0.25))
+# Flatten layer
+# make 32x100=3200 neurons
+model.add(Flatten())
+model.add(Dense(units=256, activation='relu'))
+model.add(Dropout(0.25))
+model.add(Dense(units=1, activation='sigmoid'))
+print(model.summary())
+# there are only 2 results, so use categorical_crossentropy
+model.compile(loss='binary_crossentropy', optimizer='adm', metrics=['accuracy'])
+
+# start training
+# train an example pre time (text length=100), and train all example 10 times
+train_history = model.fit(x_train, y_train, batch_size=100, epochs=10, verbose=2, validation_split=0.2)
+
+# show train history
+import matplotlib.pyplot as plt
+def show_train_history(train_history, train, validation):
+    plt.plot(train_history.history[train])
+    plt.plot(train_history.history[validation])
+    plt.title('Train History')
+    plt.xlabel('Epoch')
+    plt.ylabel(train)
+    plt.legend(['train', 'validation'])
+    plt.show()
+
+
+# using accuracy and loss plots helps to check overfitting problem
+print(show_train_history(train_history, 'accuracy', 'val_accuracy'))
+print(show_train_history(train_history, 'loss', 'val_loss'))
+
+# evaluation
+scores = model.evaluate(x_test, y_test)
+print("Final accuracy", scores[1])
+
+prediction = model.predict_classes(x_test)
+# show real value and prediction value
+
