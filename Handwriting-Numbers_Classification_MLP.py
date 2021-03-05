@@ -112,4 +112,6 @@ print(pd.crosstab(y_test_label, prediction, colnames=['predict'], rownames=['lab
 '''
 The result shows 0.9768 accuracy.
 Check out the plots on accuracy and loss, there's an overfitting problem after epoch 3.
+The accuracy of train is increasing but validation is not.
+The loss of train is decreasing but validation keep the same amount.
 '''
