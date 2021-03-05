@@ -54,7 +54,6 @@ model.add((MaxPool2D(pool_size=(2, 2))))
 # drop some neurons every round to avoid overfitting
 model.add(Dropout(0.25))
 # flatten layer
-#
 model.add(Flatten())
 # hidden layer
 model.add(Dense(128, activation='relu'))
@@ -67,6 +66,7 @@ print(model.summary())
 
 # define how to train the model
 # evaluate by accuracy, set up loss function and then go back to fix the model
+# there are more than 2 results, so use categorical_crossentropy
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # train the model and store the history
