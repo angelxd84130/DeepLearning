@@ -1,6 +1,6 @@
 import urllib.request
 import os
-'''
+
 # download dataset by url
 url = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz"
 # set up the destination for the file
@@ -14,7 +14,7 @@ import tarfile
 if not os.path.exists("aclImdb"):
     tfile = tarfile.open("aclImdb_v1.tar.gz", 'r:gz')
     result = tfile.extractall('')
-'''
+
 # read files
 def read_files(filetype):
     path = 'aclImdb/'
@@ -46,7 +46,7 @@ def read_files(filetype):
 
 (x_train, y_train) = read_files("train")
 (x_test, y_test) = read_files("test")
-
+test_text = x_test
 '''
 # get datasets from keras as a backup plan
 from keras.datasets import imdb
@@ -87,7 +87,7 @@ model.add(Dropout(0.25))
 model.add(Dense(units=1, activation='sigmoid'))
 print(model.summary())
 # there are only 2 results, so use categorical_crossentropy
-model.compile(loss='binary_crossentropy', optimizer='adm', metrics=['accuracy'])
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # start training
 # train an example pre time (text length=100), and train all example 10 times
@@ -114,5 +114,21 @@ scores = model.evaluate(x_test, y_test)
 print("Final accuracy", scores[1])
 
 prediction = model.predict_classes(x_test)
-# show real value and prediction value
+# convert predict result from 2D to 1D
+import numpy as np
+prediction = prediction.reshape(-1)
 
+# show real value and prediction value
+SentimentDict = {1:'positive', 0:'negative'}
+def display_test_SentimentDict(idx):
+    print(test_text[idx])
+    print("real result:", SentimentDict[y_test[idx]])
+    print("predict result:", SentimentDict[prediction[idx]])
+
+print(display_test_SentimentDict(1))
+print(display_test_SentimentDict(2))
+
+'''
+The result shows 0.8193 accuracy.
+Check out the plots on accuracy and loss, there's an overfitting problem after epoch 1.
+'''
