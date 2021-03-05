@@ -54,6 +54,7 @@ print(model.summary())
 
 # define how to train the model
 # evaluate by accuracy, set up loss function and then go back to fix the model
+# there are more than 2 results, so use categorical_crossentropy
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # train the model and store the history
@@ -108,3 +109,7 @@ plot_images_labels_prediction(x_test_image, y_test_label, prediction, idx=340)
 import pandas as pd
 print(pd.crosstab(y_test_label, prediction, colnames=['predict'], rownames=['label']))
 
+'''
+The result shows 0.9768 accuracy.
+Check out the plots on accuracy and loss, there's an overfitting problem after epoch 3.
+'''
