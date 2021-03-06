@@ -1,0 +1,35 @@
+class Solution:
+    def closedIsland(self, grid: List[List[int]]) -> int:
+        #copy = [[0]*len(grid[0])]*len(grid)
+        copy = [[0 for _ in range(len(grid[0]))] for _ in range(len(grid))]
+        
+        def check(grid, copy, y, x):
+            #print("y,x", y,x)
+            if x < 0 or x>=len(grid[0]):
+                return 0
+            if y < 0 or y>=len(grid):
+                return 0
+            if copy[y][x] == 1:
+                return 1
+            copy[y][x] = 1
+            if grid[y][x] == 1:
+                return 1
+            up = check(grid, copy, y-1, x) 
+            down = check(grid, copy, y+1, x) 
+            left = check(grid, copy, y, x-1) 
+            right = check(grid, copy, y, x+1)
+            #print("(u,d,l,f)", up, down, left, right)
+            return up and down and left and right
+             
+        tol = 0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                #print(i,j)
+                if grid[i][j]==0 and copy[i][j]==0:
+                    print(i,j)
+                    if check(grid, copy, i, j)==1:
+                        print(i, j)
+                        tol+=1
+                copy[i][j]=1
+                
+        return tol
