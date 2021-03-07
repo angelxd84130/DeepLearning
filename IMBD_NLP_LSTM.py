@@ -128,3 +128,8 @@ def display_test_SentimentDict(idx):
 print(display_test_SentimentDict(1))
 print(display_test_SentimentDict(2))
 
+'''
+The result shows 0.8303 accuracy. (Rnn layer unit=32)
+Check out the plots on accuracy and loss, there's an overfitting problem since epoch 1.
+If change the size of the dictionary from 2000 to 4000, the accuracy is up to 0.86
+'''
