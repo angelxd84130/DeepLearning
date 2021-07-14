@@ -4,12 +4,15 @@ Use MNIST dataset which content 60,000 training and 10,000 testing images to tra
 and adjust the model's architecture and hyperparameters to obtain the highest accuracy.  
 
 ### Data Processing
+Download MNIST dataset and reshape it.  
 
 
 ### Data Modeling
 
 - CNN  
-- MLP  
+Dense, Dropout, Flatten, Conv2D, MaxPool2D
+- MLP 
+Dense, Dropout
 
 ### Data Training & Testing  
 Apply 20% training data as validation data and train 10 times to get the final accuracy of each model.  
