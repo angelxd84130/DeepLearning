@@ -5,7 +5,7 @@ and adjust the model's architecture and hyperparameters to obtain the highest ac
 
 ### Data Processing
 Download MNIST dataset and reshape it.  
-
+![CNN][product-screenshot3]
 
 ### Data Modeling
 
